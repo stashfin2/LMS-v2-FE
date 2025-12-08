@@ -1,0 +1,54 @@
+namespace: fineract
+deployment_name: lms-fe
+
+replicaCount: 1
+
+Labels:
+  app: lms-fe
+
+nodeSelector: {}
+
+image:
+  repository: "lms-v2-fe"
+  tag: "lms-fe"
+  pullPolicy: Always
+
+configMap:
+  data:
+    FINERACT_API_URLS: "https://sandbox.mifos.community,https://demo.mifos.community,https://fineract-be.stashfin.com"
+    FINERACT_API_URL: "https://fineract-be.stashfin.com"
+    FINERACT_API_PROVIDER: "/fineract-provider/api"
+    FINERACT_API_VERSION: "/v1"
+    FINERACT_PLATFORM_TENANT_IDENTIFIER: "default"
+    MIFOS_DEFAULT_LANGUAGE: "en-US"
+    MIFOS_SUPPORTED_LANGUAGES: "cs-CS,de-DE,en-US,es-MX,es-CL,fr-FR,it-IT,ko-KO,lt-LT,lv-LV,ne-NE,pt-PT,sw-SW"
+    MIFOS_SESSION_IDLE_TIMEOUT: "300000"
+    MIFOS_PRELOAD_CLIENTS: "true"
+    MIFOS_DEFAULT_CHAR_DELIMITER: ","
+
+secret:
+  enabled: false
+  data: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+serviceAccount:
+  create: false
+  name: "admin"
+  annotations: {}
+
+healthcheck:
+  enabled: false
+
+resources: {}
+
+autoscaling:
+  enabled: false
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 25%
+    maxUnavailable: 25%
